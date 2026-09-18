@@ -1,0 +1,16 @@
+DateTable =
+ADDCOLUMNS(
+    CALENDAR(DATE(2016, 9, 1), DATE(2018, 9, 1)),
+    "Year", YEAR([Date]),
+    "YearMonthNum", YEAR([Date]) * 100 + MONTH([Date]),
+    "YearMonth", FORMAT([Date], "YYYY-MM"),
+    "Quarter", "Q" & FORMAT([Date], "Q"),
+    "MonthName", FORMAT([Date], "MMMM"),
+    "MonthNum", MONTH([Date]),
+    "Weekday", WEEKDAY([Date], 2),
+    "IsCurrentYear", YEAR([Date]) = YEAR(TODAY())
+)
+
+
+-- Add this table as a Power BI calculated table and establish a relationship
+-- from DateTable[Date] to orders[order_purchase_timestamp].

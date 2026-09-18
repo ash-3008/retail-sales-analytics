@@ -1,0 +1,10 @@
+{
+  "source_records": 99224,
+  "output_records": 99224,
+  "rejected_records": 0,
+  "multiline_comments_flattened": 3852,
+  "duplicate_review_ids": 814,
+  "duplicate_order_ids": 551,
+  "duplicate_review_order_pairs": 0,
+  "source_sha256": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7"
+}

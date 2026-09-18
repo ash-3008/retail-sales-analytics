@@ -1,0 +1,90 @@
+-- Core business KPIs
+Total Product Revenue =
+SUM(order_items[price])
+
+Total Freight Value =
+SUM(order_items[freight_value])
+
+Total Orders =
+DISTINCTCOUNT(orders[order_id])
+
+Total Customers =
+DISTINCTCOUNT(customers[customer_id])
+
+Average Order Value =
+DIVIDE([Total Product Revenue], [Total Orders], 0)
+
+Average Order Item Value =
+DIVIDE([Total Product Revenue], COUNTROWS(order_items), 0)
+
+Freight Share % =
+DIVIDE([Total Freight Value], [Total Product Revenue] + [Total Freight Value], 0)
+
+-- Order status and operational KPIs
+Delivered Orders =
+CALCULATE(
+    [Total Orders],
+    orders[order_status] = "delivered"
+)
+
+Delivery Rate % =
+DIVIDE([Delivered Orders], [Total Orders], 0)
+
+Cancelled Orders =
+CALCULATE(
+    [Total Orders],
+    orders[order_status] = "canceled"
+)
+
+Cancel Rate % =
+DIVIDE([Cancelled Orders], [Total Orders], 0)
+
+-- Customer experience
+Average Review Score =
+AVERAGE(order_reviews[review_score])
+
+Positive Review % =
+DIVIDE(
+    CALCULATE(
+        COUNTROWS(order_reviews),
+        order_reviews[review_score] >= 4
+    ),
+    COUNTROWS(order_reviews),
+    0
+)
+
+Negative Review % =
+DIVIDE(
+    CALCULATE(
+        COUNTROWS(order_reviews),
+        order_reviews[review_score] <= 2
+    ),
+    COUNTROWS(order_reviews),
+    0
+)
+
+-- Revenue trend measures
+Product Revenue YTD =
+TOTALYTD([Total Product Revenue], 'DateTable'[Date])
+
+Product Revenue LY =
+CALCULATE(
+    [Total Product Revenue],
+    SAMEPERIODLASTYEAR('DateTable'[Date])
+)
+
+Product Revenue YoY % =
+DIVIDE([Product Revenue YTD] - [Product Revenue LY], [Product Revenue LY], 0)
+
+-- Seller and category performance
+Top Category Revenue =
+MAXX(
+    VALUES(category_translation[product_category_name_english]),
+    [Total Product Revenue]
+)
+
+Top Seller Revenue =
+MAXX(
+    VALUES(sellers[seller_id]),
+    [Total Product Revenue]
+)

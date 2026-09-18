@@ -1,0 +1,15 @@
+# Raw Olist dataset should stay local and out of version control
+/data/raw/*.csv
+/data/raw/**/*.csv
+
+# Power BI temporary and generated files
+*.pbix
+*.pbit
+*.pbi
+*.tmp
+*.bak
+
+# Local analysis and environment artifacts
+*.log
+.DS_Store
+Thumbs.db

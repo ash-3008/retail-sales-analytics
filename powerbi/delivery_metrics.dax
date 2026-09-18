@@ -1,0 +1,67 @@
+-- Delivery timing measures based on order delivery date vs. estimated delivery date
+Estimated Delivery Date =
+MAX(orders[order_estimated_delivered_date])
+
+Delivered Customer Date =
+MAX(orders[order_delivered_customer_date])
+
+Delivery Delay Days =
+IF(
+    NOT ISBLANK(orders[order_delivered_customer_date]) &&
+    NOT ISBLANK(orders[order_estimated_delivered_date]),
+    DATEDIFF(orders[order_estimated_delivered_date], orders[order_delivered_customer_date], DAY),
+    BLANK()
+)
+
+On Time Delivery % =
+DIVIDE(
+    CALCULATE(
+        COUNTROWS(orders),
+        orders[order_status] = "delivered",
+        [Delivery Delay Days] <= 0
+    ),
+    CALCULATE(
+        COUNTROWS(orders),
+        orders[order_status] = "delivered"
+    ),
+    0
+)
+
+Late Delivery % =
+DIVIDE(
+    CALCULATE(
+        COUNTROWS(orders),
+        orders[order_status] = "delivered",
+        [Delivery Delay Days] > 0
+    ),
+    CALCULATE(
+        COUNTROWS(orders),
+        orders[order_status] = "delivered"
+    ),
+    0
+)
+
+Average Delivery Delay Days =
+AVERAGEX(
+    FILTER(
+        orders,
+        orders[order_status] = "delivered" &&
+        NOT ISBLANK(orders[order_delivered_customer_date]) &&
+        NOT ISBLANK(orders[order_estimated_delivered_date])
+    ),
+    [Delivery Delay Days]
+)
+
+Early Delivery % =
+DIVIDE(
+    CALCULATE(
+        COUNTROWS(orders),
+        orders[order_status] = "delivered",
+        [Delivery Delay Days] < 0
+    ),
+    CALCULATE(
+        COUNTROWS(orders),
+        orders[order_status] = "delivered"
+    ),
+    0
+)
