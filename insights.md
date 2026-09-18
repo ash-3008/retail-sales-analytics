@@ -13,7 +13,7 @@ The project combines exploratory SQL, advanced SQL techniques such as CTEs, wind
 ## 1. Revenue and Order Performance
 
 - **Total Product Revenue:** 13,591,643.70
-- **Average Order Value:** 180.24
+- **Average Order Value:** 136.68
 
 ### Order Status Distribution
 
